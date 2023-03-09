@@ -1,6 +1,7 @@
-from unittest import result
-import numpy as np 
-from functions import readingFile,minimumSupport,get__allItems_with_first_count,getFrequentData, remove_infrequent_items_from_dataset
+
+import numpy as np
+
+from functions import readingFile,minimumSupport,get__allItems_with_first_count,getFrequentData, remove_infrequent_items_from_dataset,getGlobalTree
 import sys, time
 
 
@@ -45,14 +46,41 @@ class FPgrowth:
     # order the transactions according to the frequent order of dataset
     for listVale in Transactions:
        orderedTransactions.append(sorted(listVale,key=order.index))
-    print(orderedTransactions)
+    # print(orderedTransactions)
     print(frequentItemSet)
-    LL = LinkedList()
-    LL.head = Node(3)
-    print(LL.head.value)
-    
-    
-    
+    # LL = LinkedList()
+    # LL.head = Node(3)
+    # print(LL.head.value)
 
+    # globalTree = []
+    # tempTree=[]
+    # for itemArray in orderedTransactions:
+        
+    #     if len(tempTree)==0:
+    #         initialValue =dict(Counter(itemArray))
+    #         tempTree.append(initialValue)
+    #         globalTree.append(initialValue)
+    #     else:
+    #         index = 0
+    #         alreadyExist =False
+    #         for treeValue in tempTree:
+                
+    #             if itemArray[0] in treeValue.keys():
+    #                 print(index,'found')
+    #                 tempValue=Counter(itemArray)
+    #                 globalTree[index]=dict(Counter(globalTree[index]) + tempValue)
+    #                 print(globalTree[index])
+    #                 alreadyExist = True
+    #                 break
+    #             index = index+1
+    #         if alreadyExist == False:
+    #             temp = dict(Counter(itemArray))
+    #             tempTree.append(temp)
+    #             globalTree.append(temp)
+    # print(globalTree)
+            
+                    
 
-
+   
+    globalTree =  getGlobalTree(orderedTransactions)
+    print(globalTree)

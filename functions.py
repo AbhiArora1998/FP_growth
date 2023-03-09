@@ -18,6 +18,34 @@ def getFrequentData(L,threshold):
             L.pop(value)    
     return L
 
+
+def getGlobalTree(orderedTransactions):
+    from collections import Counter
+    tempTree=[]
+    for itemArray in orderedTransactions:
+        
+        if len(tempTree)==0:
+            initialValue =dict(Counter(itemArray))
+            tempTree.append(initialValue)
+           
+        else:
+            index = 0
+            alreadyExist =False
+            for treeValue in tempTree:
+                
+                if itemArray[0] in treeValue.keys():
+                    
+                    tempValue=Counter(itemArray)
+                    tempTree[index]=dict(Counter(tempTree[index]) + tempValue)
+                    
+                    alreadyExist = True
+                    break
+                index = index+1
+            if alreadyExist == False:
+                temp = dict(Counter(itemArray))
+                tempTree.append(temp)
+    return tempTree
+
 """
        Reading the file from the dataPath mentioned in the terminal 
        PreProcessing the file to start reading the file from items 
