@@ -1,22 +1,18 @@
 
 import numpy as np
 
-from functions import readingFile,minimumSupport,get__allItems_with_first_count,getFrequentData, remove_infrequent_items_from_dataset,getGlobalTree
+
+from functions import readingFile,minimumSupport,get__allItems_with_first_count,getFrequentData, remove_infrequent_items_from_dataset,getGlobalTree,findChild
 import sys, time
 
 
-class LinkedList:
-    def __init__(self):
-        self.head =None
 
 
-class Node:
-    def __init__(self, value, next=None,previous=None):
-        self.value = value
-        self.next = next
-        self.previous = previous
+
 
 class FPgrowth:
+    
+
     initialiZations=sys.argv
     fileName = initialiZations[1]
     initalPercentage = int(initialiZations[2])
@@ -47,40 +43,46 @@ class FPgrowth:
     for listVale in Transactions:
        orderedTransactions.append(sorted(listVale,key=order.index))
     # print(orderedTransactions)
-    print(frequentItemSet)
-    # LL = LinkedList()
-    # LL.head = Node(3)
-    # print(LL.head.value)
-
-    # globalTree = []
-    # tempTree=[]
-    # for itemArray in orderedTransactions:
-        
-    #     if len(tempTree)==0:
-    #         initialValue =dict(Counter(itemArray))
-    #         tempTree.append(initialValue)
-    #         globalTree.append(initialValue)
-    #     else:
-    #         index = 0
-    #         alreadyExist =False
-    #         for treeValue in tempTree:
-                
-    #             if itemArray[0] in treeValue.keys():
-    #                 print(index,'found')
-    #                 tempValue=Counter(itemArray)
-    #                 globalTree[index]=dict(Counter(globalTree[index]) + tempValue)
-    #                 print(globalTree[index])
-    #                 alreadyExist = True
-    #                 break
-    #             index = index+1
-    #         if alreadyExist == False:
-    #             temp = dict(Counter(itemArray))
-    #             tempTree.append(temp)
-    #             globalTree.append(temp)
-    # print(globalTree)
-            
-                    
-
-   
+    # print(frequentItemSet)
+    # print(list(frequentItemSet.keys()))
+    # Build the golbal tree for us where it starts from the empty node which is the root and then add nodes if they do not exist
     globalTree =  getGlobalTree(orderedTransactions)
-    print(globalTree)
+    condtionalDictionary = dict()
+    print(frequentItemSet)
+    print(globalTree.word,globalTree.children,'global')
+    print(globalTree.children['91'].count,globalTree.children['91'].children['91'].children,'herer')
+   
+
+    # for item in reversed(frequentItemSet):
+    #     index =0
+
+    #     ourDictionary=dict()
+    #     print(item)
+    #     condtionalPath,conditionalCount=findChild(item,globalTree)
+
+    #     print(condtionalPath,conditionalCount)
+    #     for arrayValue in condtionalPath:
+
+    #         for value in arrayValue:
+    #             if value in ourDictionary:
+    #                 ourDictionary[value] = ourDictionary[value] +conditionalCount[index][0]
+    #             else:
+    #                 ourDictionary.update({value:conditionalCount[index][0]})
+
+
+    #         index = index+1
+    #     if item in ourDictionary:
+    #         del ourDictionary[item]
+    #     # print(ourDictionary)
+    #     if len(ourDictionary)!=0:
+    #         # print(ourDictionary)
+    #         # for key, value in dict(ourDictionary).items():
+    #         #     if value < threshold:
+    #         #         del ourDictionary[key]
+    #         condtionalDictionary.update({item:ourDictionary})
+    # print(condtionalDictionary)
+            
+
+            
+                
+

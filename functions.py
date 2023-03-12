@@ -1,3 +1,45 @@
+class Node:
+    def __init__(self, count,word,):
+        self.count = count
+        self.word = word
+        self.children = dict()
+
+def findChild(item,parent):
+        conditionalPath = []
+        conditionalCount = []
+        middlePath=[]
+        if parent.word != 'Empty':
+            middlePath.append(parent.word)
+        # print(parent.word,'I am the parent now')
+        if parent.word  != item:
+           # If the parent is not equal to the item then we wanna go down to look if children exist 
+           if len(parent.children)!=0:
+            #    print(parent.word,'has children',parent.children)
+               middlePath= []
+               print(parent.children,'my children')
+               for child in parent.children:
+                    print(parent.children[child].word)
+                    foundItem,count=findChild(item,parent.children[child])
+                    middlePath.append(parent.word)
+              
+                    if parent.word != 'Empty':
+                        if len(foundItem)!=0:
+                            middlePath.append(foundItem)
+                            conditionalCount.append(count)
+                        else:
+                            return [],[]
+           else:
+            #    print(parent.word,'no child exist for this one this also means we did not find any child')
+               return [],[]
+        else:
+            print([parent.word],[parent.count],'here')
+            return [parent.word],[parent.count]
+        return middlePath, conditionalCount
+
+
+class LinkedList:
+    def __init__(self):
+        self.parent =None
 
 
 def remove_infrequent_items_from_dataset(Transactions,frequentItemSet):
@@ -6,9 +48,13 @@ def remove_infrequent_items_from_dataset(Transactions,frequentItemSet):
         test=list(set (value) - set (list(frequentItemSet.keys())))
         if len(test) != 0: 
             test =  list( set(value)-set(test))
+            test = [*set(test)]
             tempCopy.append(test)
         else:
+            test = [*set(test)]
+
             tempCopy.append(value)
+        
     return tempCopy
 
 def getFrequentData(L,threshold):
@@ -16,35 +62,68 @@ def getFrequentData(L,threshold):
     for value in aboveThreshold:      
         if aboveThreshold[value] < threshold:
             L.pop(value)    
+    
     return L
 
 
 def getGlobalTree(orderedTransactions):
-    from collections import Counter
-    tempTree=[]
-    for itemArray in orderedTransactions:
+    import copy
+    parent = LinkedList()
+    root = Node(1,'Empty')
+    
+    index = 0
+    for box in  orderedTransactions:
+        # print(box,index)
+        # if index < 5:
         
-        if len(tempTree)==0:
-            initialValue =dict(Counter(itemArray))
-            tempTree.append(initialValue)
-           
-        else:
-            index = 0
-            alreadyExist =False
-            for treeValue in tempTree:
+        parent = root
+        for item in box: 
+                # print(parent.word,'Parent',parent.children)
                 
-                if itemArray[0] in treeValue.keys():
+                # print(item,'item')
+                if len(parent.children) == 0:
+                    newNode = copy.copy(Node(1,item))
+                    # print(newNode.word,newNode.children,'we found no child creating new node')
+                    temp = copy.copy(newNode)
+                    dictValue = {item:temp}
+                    parent.children.update(dictValue)
+                    # print(parent.word,parent.children,'parent')                
+
                     
-                    tempValue=Counter(itemArray)
-                    tempTree[index]=dict(Counter(tempTree[index]) + tempValue)
+
+                    parent = newNode
+                    # print(parent.word,'nocchild',parent.children)
                     
-                    alreadyExist = True
-                    break
-                index = index+1
-            if alreadyExist == False:
-                temp = dict(Counter(itemArray))
-                tempTree.append(temp)
-    return tempTree
+                else:
+                    # print('we found the child')
+
+                    for child in parent.children:
+                        childExist = False
+                        # print(child,'child')
+                        if item == child:
+                            # print('we found matching child')
+                            # print(parent.children[child].count)
+                            parent.children[child].count=parent.children[child].count+1
+                            # print(parent.children[child].count)
+
+                            parent =parent.children[child]
+                            childExist = True
+                    
+                    if not childExist:
+                        # print('we did not find matching child')
+                        # print(parent.children)
+                        anotherNode = copy.copy(Node(1,item))
+                        Anothertemp = copy.copy(anotherNode)
+                        anotherdictValue = {item:Anothertemp}
+                        parent.children.update(anotherdictValue)
+                        parent = anotherNode
+                        # print(parent.children)
+            
+
+            
+            
+
+    return root
 
 """
        Reading the file from the dataPath mentioned in the terminal 
@@ -176,3 +255,78 @@ def combineItems(items,initialItem):
     return temp
             
         
+
+
+# globalTree = []
+    # tempTree=[]
+    # for itemArray in orderedTransactions:
+        
+    #     if len(tempTree)==0:
+    #         initialValue =dict(Counter(itemArray))
+    #         tempTree.append(initialValue)
+    #         globalTree.append(initialValue)
+    #     else:
+    #         index = 0
+    #         alreadyExist =False
+    #         for treeValue in tempTree:
+                
+    #             if itemArray[0] in treeValue.keys():
+    #                 print(index,'found')
+    #                 tempValue=Counter(itemArray)
+    #                 globalTree[index]=dict(Counter(globalTree[index]) + tempValue)
+    #                 print(globalTree[index])
+    #                 alreadyExist = True
+    #                 break
+    #             index = index+1
+    #         if alreadyExist == False:
+    #             temp = dict(Counter(itemArray))
+    #             tempTree.append(temp)
+    #             globalTree.append(temp)
+    # print(globalTree)
+
+
+    # def findChild(item,parent):
+    #     conditionalPath = []
+    #     conditionalCount = []
+    #     # print(parent.word,'I am the parent now')
+    #     if parent.word  != item:
+    #        # If the parent is not equal to the item then we wanna go down to look if children exist 
+    #        if len(parent.children)!=0:
+    #         #    print(parent.word,'has children',parent.children)
+    #            middlePath= []
+    #            middlecount= []
+
+    #            for child in parent.children:
+                    
+    #                 foundItem,count=findChild(item,parent.children[child])
+    #                 middlePath.append(parent.word)
+    #                 # print(foundItem,count,'goingTO')
+    #                 if parent.word != 'Empty':
+    #                     if len(foundItem)!=0:
+    #                         # print([parent.word],count,'here')
+                            
+    #                         # print(foundItem + [parent.word],count,'where')
+    #                         savedValue=(foundItem + [parent.word]),count
+
+    #                         middlePath.append(savedValue)
+    #                         middlecount.append(count)
+
+    #                     # print(middlePath,"did we find something")
+    #                 else:
+    #                     print('we are back at the emptyParent',foundItem,count)
+    #                     # print(foundItem,count)
+    #                     if len(foundItem)!=0:
+    #                         # print(foundItem)
+    #                         conditionalPath.append(foundItem)
+    #                     if len(count)!=0:
+    #                         # print('we are going in')
+    #                         conditionalCount.append(count)
+    #                     # print('we are back at the emptyParent',conditionalPath,conditionalCount)
+    #         #    print(conditionalPath, conditionalCount,'should be returing now') 
+    #            return conditionalPath, conditionalCount
+    #        else:
+    #         #    print(parent.word,'no child exist for this one this also means we did not find any child')
+    #            return [],[]
+    #     else:
+    #         print([parent.word],[parent.count],'here')
+    #         return [parent.word],[parent.count]
