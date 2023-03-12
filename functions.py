@@ -82,10 +82,12 @@ def getGlobalTree(orderedTransactions):
                 
                 # print(item,'item')
                 if len(parent.children) == 0:
-                    newNode = copy.copy(Node(1,item))
+                    # newNode = copy.copy(Node(1,item))
+                    newNode = Node(1,item)
+
                     # print(newNode.word,newNode.children,'we found no child creating new node')
-                    temp = copy.copy(newNode)
-                    dictValue = {item:temp}
+                    # temp = copy.copy(newNode)
+                    dictValue = {item:newNode}
                     parent.children.update(dictValue)
                     # print(parent.word,parent.children,'parent')                
 
@@ -108,21 +110,19 @@ def getGlobalTree(orderedTransactions):
 
                             parent =parent.children[child]
                             childExist = True
+                            break
                     
                     if not childExist:
                         # print('we did not find matching child')
                         # print(parent.children)
-                        anotherNode = copy.copy(Node(1,item))
-                        Anothertemp = copy.copy(anotherNode)
-                        anotherdictValue = {item:Anothertemp}
+                        # anotherNode = copy.copy(Node(1,item))
+                        anotherNode = Node(1,item)
+
+                        # Anothertemp = copy.copy(anotherNode)
+                        anotherdictValue = {item:anotherNode}
                         parent.children.update(anotherdictValue)
                         parent = anotherNode
                         # print(parent.children)
-            
-
-            
-            
-
     return root
 
 """

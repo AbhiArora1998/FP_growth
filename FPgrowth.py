@@ -50,7 +50,8 @@ class FPgrowth:
     condtionalDictionary = dict()
     print(frequentItemSet)
     print(globalTree.word,globalTree.children,'global')
-    print(globalTree.children['91'].count,globalTree.children['91'].children['91'].children,'herer')
+    print(globalTree.children['2'].children['5'].children['3'].children,'herer')
+
    
 
     # for item in reversed(frequentItemSet):
