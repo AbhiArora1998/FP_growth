@@ -37,7 +37,9 @@ class FPgrowth:
     frequentItemSet =getFrequentData(candidates, threshold)
     
     # removes the infrequent items from the dataset
+    
     Transactions = remove_infrequent_items_from_dataset(Transactions,frequentItemSet)
+   #  print(order,'ore')
     
     # order the transactions according to the frequent order of dataset
     for listVale in Transactions:
@@ -50,39 +52,46 @@ class FPgrowth:
     condtionalDictionary = dict()
     print(frequentItemSet)
     print(globalTree.word,globalTree.children,'global')
-    print(globalTree.children['2'].children['5'].children['3'].children,'herer')
-
+   #  print(globalTree.children['2'].children['5'].children['3'].children,'herer')
+    
    
+   #  FoundItem, FoundCount=findChild('1',globalTree,[],[],[])
+   #  print(FoundItem, FoundCount,'here')
+   # #  print(FoundItem,FoundCount)
 
-    # for item in reversed(frequentItemSet):
-    #     index =0
+    for item in reversed(frequentItemSet):
+        index =0
 
-    #     ourDictionary=dict()
-    #     print(item)
-    #     condtionalPath,conditionalCount=findChild(item,globalTree)
+        ourDictionary=dict()
+        print(item)
+        condtionalPath,conditionalCount=findChild(item,globalTree,[],[],[])
 
-    #     print(condtionalPath,conditionalCount)
-    #     for arrayValue in condtionalPath:
+        print(condtionalPath,conditionalCount,'here')
+        for arrayValue in condtionalPath:
 
-    #         for value in arrayValue:
-    #             if value in ourDictionary:
-    #                 ourDictionary[value] = ourDictionary[value] +conditionalCount[index][0]
-    #             else:
-    #                 ourDictionary.update({value:conditionalCount[index][0]})
+            for value in arrayValue:
+                if value in ourDictionary:
+                    ourDictionary[value] = ourDictionary[value] +conditionalCount[index]
+                else:
+                    ourDictionary.update({value:conditionalCount[index]})
 
 
-    #         index = index+1
-    #     if item in ourDictionary:
-    #         del ourDictionary[item]
-    #     # print(ourDictionary)
-    #     if len(ourDictionary)!=0:
-    #         # print(ourDictionary)
-    #         # for key, value in dict(ourDictionary).items():
-    #         #     if value < threshold:
-    #         #         del ourDictionary[key]
-    #         condtionalDictionary.update({item:ourDictionary})
-    # print(condtionalDictionary)
+            index = index+1
+        print(ourDictionary)
+        if item in ourDictionary:
+            del ourDictionary[item]
+        # print(ourDictionary)
+        if len(ourDictionary)!=0:
+            print(ourDictionary)
+            for key, value in dict(ourDictionary).items():
+                if value < threshold:
+                    del ourDictionary[key]
+            condtionalDictionary.update({item:ourDictionary})
+    print(condtionalDictionary)
+    print(frequentItemSet)
+    
             
+    
 
             
                 

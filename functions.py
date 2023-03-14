@@ -1,40 +1,26 @@
 class Node:
-    def __init__(self, count,word,):
+    def __init__(self, count,word):
         self.count = count
         self.word = word
         self.children = dict()
 
-def findChild(item,parent):
-        conditionalPath = []
-        conditionalCount = []
-        middlePath=[]
-        if parent.word != 'Empty':
-            middlePath.append(parent.word)
-        # print(parent.word,'I am the parent now')
-        if parent.word  != item:
-           # If the parent is not equal to the item then we wanna go down to look if children exist 
-           if len(parent.children)!=0:
-            #    print(parent.word,'has children',parent.children)
-               middlePath= []
-               print(parent.children,'my children')
-               for child in parent.children:
-                    print(parent.children[child].word)
-                    foundItem,count=findChild(item,parent.children[child])
-                    middlePath.append(parent.word)
-              
-                    if parent.word != 'Empty':
-                        if len(foundItem)!=0:
-                            middlePath.append(foundItem)
-                            conditionalCount.append(count)
-                        else:
-                            return [],[]
-           else:
-            #    print(parent.word,'no child exist for this one this also means we did not find any child')
-               return [],[]
+def findChild(item,parent,returningList,conditionalPath,conditionalCount):
+        
+        
+        if parent.word !="Empty":
+            returningList = (returningList + [parent.word])
+        if parent.word == item:
+            conditionalPath.append(returningList)
+            conditionalCount.append(parent.count)
+            return conditionalPath , conditionalCount
         else:
-            print([parent.word],[parent.count],'here')
-            return [parent.word],[parent.count]
-        return middlePath, conditionalCount
+            # This means that parent has children
+            if len(parent.children) !=0:
+                for child in parent.children:
+                    FoundItem, FoundCount = findChild(item, parent.children[child],returningList,conditionalPath,conditionalCount)
+                return conditionalPath,conditionalCount                   
+            return conditionalPath, conditionalCount
+
 
 
 class LinkedList:
@@ -67,7 +53,7 @@ def getFrequentData(L,threshold):
 
 
 def getGlobalTree(orderedTransactions):
-    import copy
+    # import copy
     parent = LinkedList()
     root = Node(1,'Empty')
     
@@ -178,11 +164,11 @@ def get__allItems_with_first_count(Transactions):
         else:
             totalItems=(Counter(line)) + totalItems
         totalRowsCounter = totalRowsCounter+1
-    
+    print(totalItems)
     totaldict=dict(totalItems)
     totalItems = list(totaldict.keys())
     respectiveCount = list(totaldict.values())
-    # print(totaldict)
+    print(totaldict,'IAM ')
     totaldict=dict(sorted(totaldict.items(),key=lambda x:x[1],reverse=True))
     
     return totaldict
