@@ -1,8 +1,10 @@
 
+from audioop import reverse
+from unittest import result
 import numpy as np
 
 
-from functions import readingFile,minimumSupport,get__allItems_with_first_count,getFrequentData, remove_infrequent_items_from_dataset,getGlobalTree,findChild
+from functions import combineItems, readingFile,minimumSupport,get__allItems_with_first_count,getFrequentData, remove_infrequent_items_from_dataset,getGlobalTree,findChild, sub_sets
 import sys, time
 
 
@@ -89,6 +91,27 @@ class FPgrowth:
             condtionalDictionary.update({item:ourDictionary})
     print(condtionalDictionary)
     print(frequentItemSet)
+
+    myJoinedCondtionalyArray = list()
+    for value in frequentItemSet.keys():
+        myJoinedCondtionalyArray.append([value])
+    print(myJoinedCondtionalyArray)
+    array =[]
+
+
+    
+
+    for value in condtionalDictionary:
+        print(value)
+        array =[]
+        # print(condtionalDictionary[value].keys())
+        for value in condtionalDictionary[value].keys():
+            array.append(value)
+        print(array,order)
+        result =  sub_sets(array)
+        # result=combineItems(myJoinedCondtionalyArray,order)
+        print(result)
+
     
             
     

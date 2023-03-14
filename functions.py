@@ -1,3 +1,12 @@
+
+def sub_sets(sset):
+        return subsetsRecur([], sorted(sset))
+    
+def subsetsRecur( current, sset):
+        if sset:
+            return subsetsRecur(current, sset[1:]) + subsetsRecur(current + [sset[0]], sset[1:])
+        return [current]
+
 class Node:
     def __init__(self, count,word):
         self.count = count
