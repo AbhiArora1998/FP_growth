@@ -45,6 +45,7 @@ class FPgrowth:
     
     # order the transactions according to the frequent order of dataset
     for listVale in Transactions:
+    #    print(listVale)
        orderedTransactions.append(sorted(listVale,key=order.index))
     # print(orderedTransactions)
     # print(frequentItemSet)
@@ -65,10 +66,10 @@ class FPgrowth:
         index =0
 
         ourDictionary=dict()
-        print(item)
+        # print(item)
         condtionalPath,conditionalCount=findChild(item,globalTree,[],[],[])
 
-        print(condtionalPath,conditionalCount,'here')
+        # print(condtionalPath,conditionalCount,'here')
         for arrayValue in condtionalPath:
 
             for value in arrayValue:
@@ -79,39 +80,48 @@ class FPgrowth:
 
 
             index = index+1
-        print(ourDictionary)
+        # print(ourDictionary)
         if item in ourDictionary:
             del ourDictionary[item]
         # print(ourDictionary)
         if len(ourDictionary)!=0:
-            print(ourDictionary)
+            # print(ourDictionary)
             for key, value in dict(ourDictionary).items():
                 if value < threshold:
                     del ourDictionary[key]
             condtionalDictionary.update({item:ourDictionary})
-    print(condtionalDictionary)
-    print(frequentItemSet)
+    # print(condtionalDictionary)
+    # print(frequentItemSet)
 
     myJoinedCondtionalyArray = list()
-    for value in frequentItemSet.keys():
-        myJoinedCondtionalyArray.append([value])
+    for value in reversed(frequentItemSet.keys()):
+        myJoinedCondtionalyArray.append(value)
     print(myJoinedCondtionalyArray)
     array =[]
 
 
     
 
-    for value in condtionalDictionary:
-        print(value)
+    for valueKey in condtionalDictionary:
+        print(valueKey,'hr')
         array =[]
         # print(condtionalDictionary[value].keys())
-        for value in condtionalDictionary[value].keys():
+        for value in condtionalDictionary[valueKey].keys():
             array.append(value)
-        print(array,order)
+        # print(array,order)
         result =  sub_sets(array)
+        result = list(filter(None, result))
         # result=combineItems(myJoinedCondtionalyArray,order)
-        print(result)
+        index = 0
 
+        for unorderedArray in result:
+            result[index] = unorderedArray + [valueKey]
+            
+            result[index]=sorted(result[index],key=myJoinedCondtionalyArray.index)
+            
+            index =index+1
+        print(result)
+    
     
             
     
