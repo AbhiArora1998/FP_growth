@@ -179,5 +179,6 @@ def findFrequentItems(array,parent,threshold):
         if(set(array).issubset(set(Box))):
             count = count+1
     if count>= threshold:
-        return array
+        return array,count
+    return None,0
 

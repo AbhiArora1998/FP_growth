@@ -35,6 +35,7 @@ class FPgrowth:
     # Goes through every item projection
     # and provide us all the items that was found associacted with the given projection 
     for item in reversed(frequentItemSet):
+        print('Almost there please wait...')
         index =0
         ourDictionary=dict()
         # recursive calls for the projections
@@ -63,6 +64,7 @@ class FPgrowth:
         myJoinedCondtionalyArray.append(value)
    
     arrayOfFrequentItem =[]
+    arrayOfFrequentItemCount = []
     # Loops through to remove all the empty array and values that are below threshold which was conunted in the previous for loop
     for valueKey in condtionalDictionary:  
         array =[]
@@ -75,9 +77,10 @@ class FPgrowth:
         for unorderedArray in result:
             result[index] = unorderedArray + [valueKey]
             result[index]=sorted(result[index],key=myJoinedCondtionalyArray.index)
-            FrequentItemsFound= findFrequentItems(result[index],orderedTransactions,threshold)
+            FrequentItemsFound,FrequentItemsCountFound= findFrequentItems(result[index],orderedTransactions,threshold)
             if(FrequentItemsFound!= None):
                 arrayOfFrequentItem.append(FrequentItemsFound)
+                arrayOfFrequentItemCount.append(FrequentItemsCountFound)
             index =index+1
     
     # Prints the final length 
@@ -90,10 +93,12 @@ class FPgrowth:
     with open('MiningResult.txt', 'w') as f:
         with redirect_stdout(f):
             print('|FPS|:',len(arrayOfFrequentItem) +len(myJoinedCondtionalyArray))
+            lastIndex = 0
             for itemset in myJoinedCondtionalyArray:
-                print([itemset])
+                print([itemset],"=",frequentItemSet[itemset])
             for joinedItemsets in arrayOfFrequentItem:
-                print(joinedItemsets)
+                print(joinedItemsets,"=",arrayOfFrequentItemCount[lastIndex])
+                lastIndex = lastIndex+1
             
     
 
