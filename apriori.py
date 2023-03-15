@@ -47,7 +47,7 @@ class Apriori:
     
     while noMoreItems ==False :
         print('Almost there :)')
-        print(large[totalSize-1],asc)
+      
         joinedSet = combineItems(large[totalSize-1],asc)
         candidate.update({totalSize:joinedSet})
         receivedL,receiveditemCount,receivedDiscarededValue = get_L_and_itemCount_and_discarded_items(candidate[totalSize],Transactions,threshold,discarded_transactions)

@@ -13,6 +13,19 @@ class Node:
         self.word = word
         self.children = dict()
 
+def findFrequentItems(array,parent,threshold):
+    count = 0;
+    for Box in parent:
+       
+        if(set(array).issubset(set(Box))):
+            count = count+1
+        
+    if count>= threshold:
+       
+        return array
+    
+
+
 def findChild(item,parent,returningList,conditionalPath,conditionalCount):
         
         
@@ -68,56 +81,50 @@ def getGlobalTree(orderedTransactions):
     
     index = 0
     for box in  orderedTransactions:
-        # print(box,index)
-        # if index < 5:
+        
         
         parent = root
         for item in box: 
-                # print(parent.word,'Parent',parent.children)
+           
                 
-                # print(item,'item')
+             
                 if len(parent.children) == 0:
-                    # newNode = copy.copy(Node(1,item))
+                
                     newNode = Node(1,item)
 
-                    # print(newNode.word,newNode.children,'we found no child creating new node')
-                    # temp = copy.copy(newNode)
                     dictValue = {item:newNode}
                     parent.children.update(dictValue)
-                    # print(parent.word,parent.children,'parent')                
+                                
 
                     
 
                     parent = newNode
-                    # print(parent.word,'nocchild',parent.children)
+                  
                     
                 else:
-                    # print('we found the child')
+                   
 
                     for child in parent.children:
                         childExist = False
-                        # print(child,'child')
+                       
                         if item == child:
-                            # print('we found matching child')
-                            # print(parent.children[child].count)
+                          
                             parent.children[child].count=parent.children[child].count+1
-                            # print(parent.children[child].count)
+                           
 
                             parent =parent.children[child]
                             childExist = True
                             break
                     
                     if not childExist:
-                        # print('we did not find matching child')
-                        # print(parent.children)
-                        # anotherNode = copy.copy(Node(1,item))
+                        
                         anotherNode = Node(1,item)
 
-                        # Anothertemp = copy.copy(anotherNode)
+                      
                         anotherdictValue = {item:anotherNode}
                         parent.children.update(anotherdictValue)
                         parent = anotherNode
-                        # print(parent.children)
+                        
     return root
 
 """
@@ -173,11 +180,11 @@ def get__allItems_with_first_count(Transactions):
         else:
             totalItems=(Counter(line)) + totalItems
         totalRowsCounter = totalRowsCounter+1
-    print(totalItems)
+    
     totaldict=dict(totalItems)
     totalItems = list(totaldict.keys())
     respectiveCount = list(totaldict.values())
-    print(totaldict,'IAM ')
+    
     totaldict=dict(sorted(totaldict.items(),key=lambda x:x[1],reverse=True))
     
     return totaldict
