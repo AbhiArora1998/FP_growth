@@ -1,34 +1,22 @@
-
-def sub_sets(sset):
-        return subsetsRecur([], sorted(sset))
-    
-def subsetsRecur( current, sset):
-        if sset:
-            return subsetsRecur(current, sset[1:]) + subsetsRecur(current + [sset[0]], sset[1:])
-        return [current]
-
+"""
+       This class gets initialsed every time we create a new node or object
+       This contains a count to keep the count of item 
+       Word to track of the word 
+       and children which is a dictionary to keep count of all the childrens associated with this node
+"""
 class Node:
     def __init__(self, count,word):
         self.count = count
         self.word = word
         self.children = dict()
 
-def findFrequentItems(array,parent,threshold):
-    count = 0;
-    for Box in parent:
-       
-        if(set(array).issubset(set(Box))):
-            count = count+1
-        
-    if count>= threshold:
-       
-        return array
-    
-
-
+"""
+       This is a recursive function allowing to traverse through the tree 
+       This function helps provide all the projections of all the frequent items 
+       This function append all the parent came accross and send it along with the count of the item we are searching for 
+       It recursively traverse all the way down till it find the item we are looking for
+"""
 def findChild(item,parent,returningList,conditionalPath,conditionalCount):
-        
-        
         if parent.word !="Empty":
             returningList = (returningList + [parent.word])
         if parent.word == item:
@@ -44,12 +32,17 @@ def findChild(item,parent,returningList,conditionalPath,conditionalCount):
             return conditionalPath, conditionalCount
 
 
-
+"""
+       Creating a pointer name parent which allows to keep track of where we are in the global tree  
+"""
 class LinkedList:
     def __init__(self):
         self.parent =None
 
-
+"""
+       This funtion takes all the transactions taken from the dataset 
+       then this function goes to the loop and remove all the items that are infrequent with the help of frequentItemset 
+"""
 def remove_infrequent_items_from_dataset(Transactions,frequentItemSet):
     tempCopy = []
     for value in Transactions:
@@ -65,77 +58,53 @@ def remove_infrequent_items_from_dataset(Transactions,frequentItemSet):
         
     return tempCopy
 
+"""
+    This function takes the dictionary of hashtbale and remove all the items that are below threshold 
+"""
 def getFrequentData(L,threshold):
     aboveThreshold = L.copy()
     for value in aboveThreshold:      
         if aboveThreshold[value] < threshold:
             L.pop(value)    
-    
     return L
 
-
+"""
+        1) This function takes the ordered Transactions 
+        2) Then it creates a root node to begin with 
+        3) Then it creates a newnode if the parent value does not match and allocate it to the children  
+"""
 def getGlobalTree(orderedTransactions):
     # import copy
     parent = LinkedList()
     root = Node(1,'Empty')
-    
-    index = 0
     for box in  orderedTransactions:
-        
-        
         parent = root
         for item in box: 
-           
-                
-             
                 if len(parent.children) == 0:
-                
                     newNode = Node(1,item)
-
                     dictValue = {item:newNode}
                     parent.children.update(dictValue)
-                                
-
-                    
-
                     parent = newNode
-                  
-                    
                 else:
-                   
-
                     for child in parent.children:
                         childExist = False
-                       
                         if item == child:
-                          
                             parent.children[child].count=parent.children[child].count+1
-                           
-
                             parent =parent.children[child]
                             childExist = True
                             break
-                    
-                    if not childExist:
-                        
+                    if not childExist:  
                         anotherNode = Node(1,item)
-
-                      
                         anotherdictValue = {item:anotherNode}
                         parent.children.update(anotherdictValue)
-                        parent = anotherNode
-                        
+                        parent = anotherNode          
     return root
 
 """
        Reading the file from the dataPath mentioned in the terminal 
        PreProcessing the file to start reading the file from items 
 """
-
-
-
 def readingFile(dataPath):
-
     resultedFile= list()
     totalRows = 0
     with open(dataPath) as f: 
@@ -159,11 +128,6 @@ def minimumSupport(totalRows,percentage):
     minimum_confidence_percent = percentage
     return (int(totalRows)*minimum_confidence_percent)/100
 
-# def isSubsetFunc(item1,item2):
-#     return set(item1).issubset(set(item2))
-
-
-
 """
     This is being used to count all the items uniquely for the first loop 
     This is being done to reduce the time complexity 
@@ -173,88 +137,47 @@ def get__allItems_with_first_count(Transactions):
     from collections import Counter
     totalRowsCounter=0
     totalItems = Counter()
-   
     for line in Transactions:
         if totalRowsCounter==0:
             totalItems=(Counter(line))
         else:
             totalItems=(Counter(line)) + totalItems
         totalRowsCounter = totalRowsCounter+1
-    
     totaldict=dict(totalItems)
     totalItems = list(totaldict.keys())
     respectiveCount = list(totaldict.values())
-    
     totaldict=dict(sorted(totaldict.items(),key=lambda x:x[1],reverse=True))
-    
     return totaldict
-"""
-        This counts the rest of the values by checking if the given item exist in the transactions
-"""
 
-# def item_counter(singleItemSet, Transactions):
-#     incremente_count = 0
-#     for i in range(len(Transactions)):
-#         if isSubsetFunc(singleItemSet,Transactions[i]):
-#             incremente_count = incremente_count+1
-#     return incremente_count
 
 """
-    This function checks finds all the items and checks if it subset of discarded items 
-    If it is then ignore the items. Else count the amount of times it was repeated and send items back which are above threshold
-    
+    takes the array or items that are required to find the subsets 
+    Reference https://www.w3resource.com/python-exercises/class-exercises/python-class-exercise-4.php
 """
 
-# def get_L_and_itemCount_and_discarded_items(itemSet, initialTransactions, threshold,rejectValues):
-#     tempL,newDiscardedValue,itemCount = list(),list(),list()   
-#     for index in range(len(itemSet)):
-#         isDiscarded = -1
-#         value = itemSet[index]
-#         if len(rejectValues.keys()) > 0:
-#             for reject in rejectValues[len(rejectValues.keys())]:
-#                 if isSubsetFunc(reject,value):
-#                     isDiscarded = 1
-#                     break
-#         if isDiscarded == -1:
-#             # [1]
-#             itemCounter = item_counter(value,initialTransactions)
-#             if itemCounter >= threshold:
-#                 tempL.append(value)
-#                 itemCount.append(itemCounter)
-#             else:
-#                 newDiscardedValue.append(value)
-#     return tempL,itemCount,newDiscardedValue
+def getMySubsets(boxArray):
+        return mergeJoinRecusive(list(), sorted(boxArray))
 
 """
-    This checks if the two items have anything in common neglect it 
-    They are not and we have all the items sorted 
-    therefore check if the last index is greater than the previous one 
-    then join that item 
+    Recurisively call itself to merge all the possible items together if nothing then it merges an empty set and return that as well 
+    Reference https://www.w3resource.com/python-exercises/class-exercises/python-class-exercise-4.php 
 """
-# def inner_combine_sets(firstItem,secondItem,sortedOrder):
-#     lastIndex = -1
-#     for index in range(len(firstItem)):
-#         # [1]
-#         if firstItem[index] == secondItem[index]:
-#             return list()
-#     if sortedOrder.index(firstItem[lastIndex]) < sortedOrder.index(secondItem[lastIndex]):    
-#             return firstItem + [secondItem[lastIndex]]
 
-#     return list()
+def mergeJoinRecusive( totalItems, boxArray):
+        if boxArray:
+            return mergeJoinRecusive(totalItems, boxArray[1:]) + mergeJoinRecusive(totalItems + [boxArray[0]], boxArray[1:])
+        return [totalItems]
 
-# """
-#     if the length of combined result from the inner_combine_sets function is greater than one and is not already in our list 
-#     add it and otherwise ignore it 
-# """
-# def combineItems(items,initialItem):
-#     temp = list()
-#     for index in range(len(items)-1):
-#         for innerIndex in range(index+1,len(items)):
-#             combinedResult = inner_combine_sets(items[index],items[innerIndex],initialItem)
-#             if len(combinedResult)>0 and combinedResult not in temp:
-#                 temp.append(combinedResult)
-
-#     return temp
-            
-        
+"""
+    This function checks if all the conditional itemsets are frequent or not 
+    If they are frequent then we save them 
+    If they are not we remove them from the conditonal itemsets
+"""
+def findFrequentItems(array,parent,threshold):
+    count = 0;
+    for Box in parent:
+        if(set(array).issubset(set(Box))):
+            count = count+1
+    if count>= threshold:
+        return array
 
