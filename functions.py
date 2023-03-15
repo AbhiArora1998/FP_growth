@@ -159,8 +159,8 @@ def minimumSupport(totalRows,percentage):
     minimum_confidence_percent = percentage
     return (int(totalRows)*minimum_confidence_percent)/100
 
-def isSubsetFunc(item1,item2):
-    return set(item1).issubset(set(item2))
+# def isSubsetFunc(item1,item2):
+#     return set(item1).issubset(set(item2))
 
 
 
@@ -192,12 +192,12 @@ def get__allItems_with_first_count(Transactions):
         This counts the rest of the values by checking if the given item exist in the transactions
 """
 
-def item_counter(singleItemSet, Transactions):
-    incremente_count = 0
-    for i in range(len(Transactions)):
-        if isSubsetFunc(singleItemSet,Transactions[i]):
-            incremente_count = incremente_count+1
-    return incremente_count
+# def item_counter(singleItemSet, Transactions):
+#     incremente_count = 0
+#     for i in range(len(Transactions)):
+#         if isSubsetFunc(singleItemSet,Transactions[i]):
+#             incremente_count = incremente_count+1
+#     return incremente_count
 
 """
     This function checks finds all the items and checks if it subset of discarded items 
@@ -205,25 +205,25 @@ def item_counter(singleItemSet, Transactions):
     
 """
 
-def get_L_and_itemCount_and_discarded_items(itemSet, initialTransactions, threshold,rejectValues):
-    tempL,newDiscardedValue,itemCount = list(),list(),list()   
-    for index in range(len(itemSet)):
-        isDiscarded = -1
-        value = itemSet[index]
-        if len(rejectValues.keys()) > 0:
-            for reject in rejectValues[len(rejectValues.keys())]:
-                if isSubsetFunc(reject,value):
-                    isDiscarded = 1
-                    break
-        if isDiscarded == -1:
-            # [1]
-            itemCounter = item_counter(value,initialTransactions)
-            if itemCounter >= threshold:
-                tempL.append(value)
-                itemCount.append(itemCounter)
-            else:
-                newDiscardedValue.append(value)
-    return tempL,itemCount,newDiscardedValue
+# def get_L_and_itemCount_and_discarded_items(itemSet, initialTransactions, threshold,rejectValues):
+#     tempL,newDiscardedValue,itemCount = list(),list(),list()   
+#     for index in range(len(itemSet)):
+#         isDiscarded = -1
+#         value = itemSet[index]
+#         if len(rejectValues.keys()) > 0:
+#             for reject in rejectValues[len(rejectValues.keys())]:
+#                 if isSubsetFunc(reject,value):
+#                     isDiscarded = 1
+#                     break
+#         if isDiscarded == -1:
+#             # [1]
+#             itemCounter = item_counter(value,initialTransactions)
+#             if itemCounter >= threshold:
+#                 tempL.append(value)
+#                 itemCount.append(itemCounter)
+#             else:
+#                 newDiscardedValue.append(value)
+#     return tempL,itemCount,newDiscardedValue
 
 """
     This checks if the two items have anything in common neglect it 
@@ -231,104 +231,30 @@ def get_L_and_itemCount_and_discarded_items(itemSet, initialTransactions, thresh
     therefore check if the last index is greater than the previous one 
     then join that item 
 """
-def inner_combine_sets(firstItem,secondItem,sortedOrder):
-    lastIndex = -1
-    for index in range(len(firstItem)):
-        # [1]
-        if firstItem[index] == secondItem[index]:
-            return list()
-    if sortedOrder.index(firstItem[lastIndex]) < sortedOrder.index(secondItem[lastIndex]):    
-            return firstItem + [secondItem[lastIndex]]
+# def inner_combine_sets(firstItem,secondItem,sortedOrder):
+#     lastIndex = -1
+#     for index in range(len(firstItem)):
+#         # [1]
+#         if firstItem[index] == secondItem[index]:
+#             return list()
+#     if sortedOrder.index(firstItem[lastIndex]) < sortedOrder.index(secondItem[lastIndex]):    
+#             return firstItem + [secondItem[lastIndex]]
 
-    return list()
+#     return list()
 
-"""
-    if the length of combined result from the inner_combine_sets function is greater than one and is not already in our list 
-    add it and otherwise ignore it 
-"""
-def combineItems(items,initialItem):
-    temp = list()
-    for index in range(len(items)-1):
-        for innerIndex in range(index+1,len(items)):
-            combinedResult = inner_combine_sets(items[index],items[innerIndex],initialItem)
-            if len(combinedResult)>0 and combinedResult not in temp:
-                temp.append(combinedResult)
+# """
+#     if the length of combined result from the inner_combine_sets function is greater than one and is not already in our list 
+#     add it and otherwise ignore it 
+# """
+# def combineItems(items,initialItem):
+#     temp = list()
+#     for index in range(len(items)-1):
+#         for innerIndex in range(index+1,len(items)):
+#             combinedResult = inner_combine_sets(items[index],items[innerIndex],initialItem)
+#             if len(combinedResult)>0 and combinedResult not in temp:
+#                 temp.append(combinedResult)
 
-    return temp
+#     return temp
             
         
 
-
-# globalTree = []
-    # tempTree=[]
-    # for itemArray in orderedTransactions:
-        
-    #     if len(tempTree)==0:
-    #         initialValue =dict(Counter(itemArray))
-    #         tempTree.append(initialValue)
-    #         globalTree.append(initialValue)
-    #     else:
-    #         index = 0
-    #         alreadyExist =False
-    #         for treeValue in tempTree:
-                
-    #             if itemArray[0] in treeValue.keys():
-    #                 print(index,'found')
-    #                 tempValue=Counter(itemArray)
-    #                 globalTree[index]=dict(Counter(globalTree[index]) + tempValue)
-    #                 print(globalTree[index])
-    #                 alreadyExist = True
-    #                 break
-    #             index = index+1
-    #         if alreadyExist == False:
-    #             temp = dict(Counter(itemArray))
-    #             tempTree.append(temp)
-    #             globalTree.append(temp)
-    # print(globalTree)
-
-
-    # def findChild(item,parent):
-    #     conditionalPath = []
-    #     conditionalCount = []
-    #     # print(parent.word,'I am the parent now')
-    #     if parent.word  != item:
-    #        # If the parent is not equal to the item then we wanna go down to look if children exist 
-    #        if len(parent.children)!=0:
-    #         #    print(parent.word,'has children',parent.children)
-    #            middlePath= []
-    #            middlecount= []
-
-    #            for child in parent.children:
-                    
-    #                 foundItem,count=findChild(item,parent.children[child])
-    #                 middlePath.append(parent.word)
-    #                 # print(foundItem,count,'goingTO')
-    #                 if parent.word != 'Empty':
-    #                     if len(foundItem)!=0:
-    #                         # print([parent.word],count,'here')
-                            
-    #                         # print(foundItem + [parent.word],count,'where')
-    #                         savedValue=(foundItem + [parent.word]),count
-
-    #                         middlePath.append(savedValue)
-    #                         middlecount.append(count)
-
-    #                     # print(middlePath,"did we find something")
-    #                 else:
-    #                     print('we are back at the emptyParent',foundItem,count)
-    #                     # print(foundItem,count)
-    #                     if len(foundItem)!=0:
-    #                         # print(foundItem)
-    #                         conditionalPath.append(foundItem)
-    #                     if len(count)!=0:
-    #                         # print('we are going in')
-    #                         conditionalCount.append(count)
-    #                     # print('we are back at the emptyParent',conditionalPath,conditionalCount)
-    #         #    print(conditionalPath, conditionalCount,'should be returing now') 
-    #            return conditionalPath, conditionalCount
-    #        else:
-    #         #    print(parent.word,'no child exist for this one this also means we did not find any child')
-    #            return [],[]
-    #     else:
-    #         print([parent.word],[parent.count],'here')
-    #         return [parent.word],[parent.count]

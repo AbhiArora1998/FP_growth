@@ -3,7 +3,7 @@
 import numpy as np
 
 
-from functions import combineItems, readingFile,minimumSupport,get__allItems_with_first_count,getFrequentData, remove_infrequent_items_from_dataset,getGlobalTree,findChild, sub_sets,findFrequentItems
+from functions import  readingFile,minimumSupport,get__allItems_with_first_count,getFrequentData, remove_infrequent_items_from_dataset,getGlobalTree,findChild, sub_sets,findFrequentItems
 import sys, time
 
 
@@ -115,9 +115,9 @@ class FPgrowth:
 
 
             index =index+1
-    print(arrayOfFrequentItem)
-    print(myJoinedCondtionalyArray)
-    print(len(arrayOfFrequentItem) +len(myJoinedCondtionalyArray) ) 
+    # print(arrayOfFrequentItem)
+    # print(myJoinedCondtionalyArray)
+    print('|FPS|',len(arrayOfFrequentItem) +len(myJoinedCondtionalyArray) ) 
     end =  time.time()
     print(end-Start)
     from contextlib import redirect_stdout
